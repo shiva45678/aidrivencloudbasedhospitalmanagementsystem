@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Newtons HMS: Autonomous AI Hospital Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Experience the future with Newtons, the world's first truly autonomous, cloud-based AI hospital management system. Our AI takes complete control, from patient intake to diagnostics, billing, and inventory."/>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="logo.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <!-- SEO & Social Media Meta Tags -->
+    <meta property="og:title" content="Newtons HMS: Autonomous AI Hospital Management System"/>
+    <meta property="og:description" content="The world's first truly autonomous, cloud-based AI hospital management system."/>
+    <meta property="og:image" content="https://your-website-url.com/logo.png"/>
+    <meta property="og:url" content="https://your-website-url.com"/>
+    <meta property="og:type" content="website"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:image" content="https://your-website-url.com/logo.png"/>
+
+    <!-- JSON-LD for SEO - Organization & Logo -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Newtons HMS",
+      "url": "https://your-website-url.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://your-website-url.com/logo.svg",
+        "width": "200",
+        "height": "50"
+      }
+    }
+    </script>
+    
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+    <style>
+        :root {
+            /* Light Theme Colors */
+            --bg-light: #F9FAFB;
+            --surface-light: #FFFFFF;
+            --text-primary-light: #1F2937;
+            --text-secondary-light: #6B7280;
+            --heading-light: #111827;
+            --border-light: #E5E7EB;
+            --primary-color-light: #0d6efd; /* More vibrant blue */
+            --secondary-color-light: #13a8a2; /* Greener teal for hover/accent */
+
+            /* Dark Theme Colors */
+            --bg-dark: #111827;
+            --surface-dark: #1F2937;
+            --text-primary-dark: #F3F4F6;
+            --text-secondary-dark: #9CA3AF;
+            --heading-dark: #FFFFFF;
+            --border-dark: #374151;
+            --primary-color-dark: #3b82f6; /* Bright, accessible blue for dark mode */
+            --secondary-color-dark: #14b8a6; /* Bright teal for hover/accent */
+
+            /* Default Theme Variables */
+            --app-bg: var(--bg-light);
+            --app-surface: var(--surface-light);
+            --app-text-primary: var(--text-primary-light);
+            --app-text-secondary: var(--text-secondary-light);
+            --app-heading: var(--heading-light);
+            --app-border: var(--border-light);
+            --app-primary: var(--primary-color-light);
+            --app-secondary: var(--secondary-color-light);
+
+            /* RGB versions */
+            --primary-color-light-rgb: 13, 110, 253;
+            --secondary-color-light-rgb: 19, 168, 162;
+            --primary-color-dark-rgb: 59, 130, 246;
+            --secondary-color-dark-rgb: 20, 184, 166;
+            --surface-light-rgb: 255, 255, 255;
+            --surface-dark-rgb: 31, 41, 55;
+            --shadow-color-rgb: 0, 0, 0;
+
+            --app-primary-rgb: var(--primary-color-light-rgb);
+            --app-secondary-rgb: var(--secondary-color-light-rgb);
+            
+            --card-shadow: 0 4px 8px -2px rgba(var(--shadow-color-rgb), 0.07), 0 2px 4px -2px rgba(var(--shadow-color-rgb), 0.04);
+            --card-hover-shadow: 0 10px 15px -3px rgba(var(--shadow-color-rgb), 0.08), 0 4px 6px -4px rgba(var(--shadow-color-rgb), 0.05);
+            --border-radius-lg: 0.75rem;
+            --transition-std: all 0.3s ease-in-out;
+            --section-spacing: clamp(60px, 10vw, 100px);
+            --container-padding: clamp(15px, 4vw, 20px);
+        }
+        body.dark-theme {
+            --app-bg: var(--bg-dark);
+            --app-surface: var(--surface-dark);
+            --app-text-primary: var(--text-primary-dark);
+            --app-text-secondary: var(--text-secondary-dark);
+            --app-heading: var(--heading-dark);
+            --app-border: var(--border-dark);
+            --app-primary: var(--primary-color-dark);
+            --app-secondary: var(--secondary-color-dark);
+            --app-primary-rgb: var(--primary-color-dark-rgb);
+            --app-secondary-rgb: var(--secondary-color-dark-rgb);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--app-bg); color: var(--app-text-primary); transition: background-color var(--transition-std), color var(--transition-std); line-height: 1.7; }
+        h1, h2, h3, h4, h5, h6 { color: var(--app-heading); line-height: 1.3; margin-bottom: 0.75em; font-weight: 700; }
+        p { color: var(--app-text-secondary); margin-bottom: 1.25em; }
+        a { color: var(--app-primary); text-decoration: none; transition: all 0.2s ease-in-out; }
+        a:hover { color: var(--app-secondary); text-decoration: none; }
+        .container { max-width: 1200px; margin: auto; padding: 0 var(--container-padding); }
+        
+        /* Header & Nav */
+        header { position: fixed; width: 100%; top: 0; z-index: 1000; background-color: rgba(var(--surface-light-rgb), 0.85); backdrop-filter: blur(12px) saturate(180%); box-shadow: 0 1px 2px 0 rgba(var(--shadow-color-rgb), 0.05); transition: var(--transition-std); }
+        body.dark-theme header { background-color: rgba(var(--surface-dark-rgb), 0.85); box-shadow: 0 1px 2px 0 rgba(var(--shadow-color-rgb), 0.1); }
+        .header-content { display: flex; justify-content: space-between; align-items: center; height: 72px; }
+        .logo { font-weight: 800; font-size: 1.5rem; color: var(--app-primary); display: flex; align-items: center; gap: 0.5rem; }
+        .logo i { font-size: 1.3rem; }
+        nav.nav-desktop ul { display: flex; list-style: none; gap: clamp(16px, 3vw, 32px); margin: 0; padding: 0; }
+        nav.nav-desktop a { color: var(--app-text-primary); font-weight: 600; position: relative; padding: 8px 4px; }
+        nav.nav-desktop a::after { content: ''; position: absolute; width: 0; height: 3px; bottom: -2px; left: 50%; transform: translateX(-50%); background-color: var(--app-primary); transition: width 0.2s ease-in-out; border-radius: 1px; }
+        nav.nav-desktop a:hover, nav.nav-desktop a.nav-active { color: var(--app-primary); }
+        nav.nav-desktop a:hover::after, nav.nav-desktop a.nav-active::after { width: 100%; }
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+        .theme-toggle, .mobile-menu-btn { background: none; border: none; color: var(--app-text-secondary); cursor: pointer; font-size: 1.35rem; padding: 10px; border-radius: 50%; line-height: 1; transition: var(--transition-std); }
+        .theme-toggle:hover, .mobile-menu-btn:hover { color: var(--app-primary); background-color: rgba(var(--app-primary-rgb), 0.1); }
+        
+        /* Enhanced Button Styles */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: var(--transition-std); cursor: pointer; font-size: 1rem; border: 2px solid transparent; }
+        .btn:hover { transform: translateY(-3px); box-shadow: var(--card-hover-shadow); text-decoration: none; }
+        .btn-lg { padding: 14px 28px; font-size: 1.1rem; }
+        .btn-primary { background-color: var(--app-primary); color: #fff; border-color: var(--app-primary); }
+        .btn-primary:hover { background-color: var(--app-secondary); border-color: var(--app-secondary); color: #fff; }
+        .btn-outline-primary { color: var(--app-primary); border-color: currentColor; background-color: transparent; }
+        .btn-outline-primary:hover { background-color: var(--app-primary); color: var(--surface-light); }
+        body.dark-theme .btn-outline-primary:hover { color: var(--bg-dark); }
+        .btn-light { background-color: #fff; color: #0d6efd; border-color: #fff; }
+        .btn-light:hover { background-color: #f0f0f0; border-color: #f0f0f0; }
+        .btn-outline-light { color: #fff; border-color: currentColor; }
+        .btn-outline-light:hover { background-color: rgba(255, 255, 255, 0.15); border-color: #fff; }
+
+        /* Hero Section */
+        #hero { position: relative; display: flex; align-items: center; color: var(--app-heading); overflow: hidden; padding-top: 140px; padding-bottom: 100px; }
+        #hero.gradient-bg { background: linear-gradient(135deg, var(--primary-color-light) 0%, var(--secondary-color-light) 100%); color: #fff; }
+        body.dark-theme #hero.gradient-bg { background: linear-gradient(135deg, var(--primary-color-dark) 0%, var(--secondary-color-dark) 100%); }
+        .hero-grid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 4fr); align-items: center; gap: clamp(24px, 5vw, 60px); }
+        .hero-content { text-align: left; }
+        .hero-content h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.15; margin-bottom: 0.6em; }
+        .hero-content p { font-size: clamp(1rem, 3vw, 1.15rem); opacity: .9; margin-bottom: 1.5em; }
+        .hero-subtitle { color: #fff; opacity: 1; } 
+
+        /* General Section Styling */
+        section { padding: var(--section-spacing) 0; position: relative; overflow-x: hidden; }
+        .bg-surface { background-color: var(--app-surface); }
+        .section-heading { text-align: center; margin-bottom: 16px; font-weight: 800; font-size: clamp(2rem, 5vw, 2.75rem); }
+        .section-subheading { text-align: center; max-width: 750px; margin: 0 auto 56px; color: var(--app-text-secondary); font-size: 1.1rem; }
+        
+        /* Cards (Features, Benefits) */
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 28px; }
+        .feature-card { background-color: var(--app-surface); border-radius: var(--border-radius-lg); padding: 28px; box-shadow: var(--card-shadow); transition: var(--transition-std); border: 1px solid var(--app-border); display: flex; flex-direction: column; }
+        .feature-card:hover { transform: translateY(-6px); box-shadow: var(--card-hover-shadow); }
+        .card-icon { width: 60px; height: 60px; background: var(--app-primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1rem; }
+        .feature-card .card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 12px; }
+        .feature-card .card-text { color: var(--app-text-secondary); font-size: 0.95rem; line-height: 1.6; flex-grow: 1; }
+
+        /* Video Container (used in Hero) */
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: var(--border-radius-lg); box-shadow: var(--card-hover-shadow); }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* About Section */
+        .about-content { display: flex; align-items: center; gap: 48px; }
+        .about-image img { border-radius: var(--border-radius-lg); max-width: 100%; height: auto; }
+
+        /* Testimonials Section */
+        .testimonial-slider-container { position: relative; padding: 0 40px; }
+        .testimonial-grid { display: flex; overflow-x: auto; gap: 24px; padding: 10px 2px 20px 2px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .testimonial-grid::-webkit-scrollbar { display: none; }
+        .testimonial-card { flex: 0 0 clamp(300px, 80vw, 450px); scroll-snap-align: start; background-color: var(--app-surface); border-radius: var(--border-radius-lg); padding: 28px; box-shadow: var(--card-shadow); transition: var(--transition-std); border: 1px solid var(--app-border); display: flex; flex-direction: column; }
+        .testimonial-card:hover { transform: translateY(-6px); box-shadow: var(--card-hover-shadow); }
+        .testimonial-text { font-style: italic; margin-bottom: 24px; font-size: 1.05rem; color: var(--app-text-secondary); flex-grow: 1; }
+        .testimonial-person { display: flex; align-items: center; gap: 16px; margin-top: auto; }
+        .testimonial-person img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+        .testimonial-info h4 { margin: 0 0 4px 0; font-weight: 600; font-size: 1rem; color: var(--app-heading); }
+        .testimonial-info p { margin: 0; color: var(--app-text-secondary); font-size: 0.9rem; }
+        .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); background-color: var(--app-surface); border: 1px solid var(--app-border); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; box-shadow: 0 2px 10px rgba(var(--shadow-color-rgb), 0.08); transition: var(--transition-std); color: var(--app-primary); }
+        .slider-arrow:hover { background-color: var(--app-primary); color: #fff; border-color: var(--app-primary); transform: translateY(-50%) scale(1.05); }
+        .left-arrow { left: -10px; }
+        .right-arrow { right: -10px; }
+        
+        /* Pricing Section */
+        .pricing-card { text-align: center; }
+        .pricing-card.featured { border-color: var(--app-primary); transform: scale(1.03); z-index: 5; }
+        .pricing-card .price { margin-bottom: 24px; line-height: 1.1; }
+        .pricing-card .current-price { font-size: 2.8rem; font-weight: 800; color: var(--app-heading); }
+        .pricing-card.featured .current-price { color: var(--app-primary); }
+        .pricing-card .price-term { font-size: 1rem; color: var(--app-text-secondary); font-weight: 400; }
+        .pricing-card .features-list { list-style: none; padding: 0; margin: 24px auto; text-align: left; max-width: 280px; }
+        .pricing-card .features-list li { margin-bottom: 10px; padding-left: 28px; position: relative; color: var(--app-text-primary); }
+        .pricing-card .features-list li::before { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--app-secondary); position: absolute; left: 0; top: 4px; }
+        
+        /* New Contact Section Styles */
+        #contact { text-align: center; }
+        .contact-info { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px; margin-top: 40px; margin-bottom: 40px; }
+        .contact-item { background-color: var(--app-surface); padding: 24px; border-radius: var(--border-radius-lg); box-shadow: var(--card-shadow); flex: 1; min-width: 280px; max-width: 350px; border: 1px solid var(--app-border); }
+        .contact-item i { font-size: 1.8rem; color: var(--app-primary); margin-bottom: 1rem; }
+        .contact-item h3 { font-size: 1.3rem; margin-bottom: 8px; color: var(--app-heading); }
+        .contact-item p { margin-bottom: 0; color: var(--app-text-secondary); }
+        .contact-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+        
+        /* Footer */
+        footer { background-color: #111827; color: #9CA3AF; padding: 80px 0 40px; }
+        footer h3, footer h6 { color: #fff; font-weight: 600; margin-bottom: 20px; }
+        footer a { color: #9CA3AF; }
+        footer a:hover { color: var(--secondary-color-dark); }
+        .footer-content { display: flex; flex-wrap: wrap; gap: 40px; margin-bottom: 40px; justify-content: space-between; }
+        .footer-col { flex: 1; min-width: 220px; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-bottom { padding-top: 30px; border-top: 1px solid var(--border-dark); text-align: center; font-size: 0.9rem; }
+        
+        /* Mobile Nav & Overlay */
+        .mobile-menu-btn { display: none; }
+        .mobile-nav { position: fixed; top: 0; right: -100%; width: min(300px, 85vw); height: 100vh; background-color: var(--app-surface); z-index: 1001; padding: 24px; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -8px 0 30px rgba(var(--shadow-color-rgb), 0.15); display: flex; flex-direction: column; }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav-close { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--app-text-secondary); font-size: 1.75rem; cursor: pointer; padding: 12px; border-radius: 50%; line-height: 1; }
+        .mobile-nav ul { list-style: none; padding: 0; margin: 60px 0 20px; }
+        .mobile-nav li { margin-bottom: 8px; }
+        .mobile-nav a { display: block; padding: 14px 18px; border-radius: 8px; font-weight: 500; font-size: 1.1rem; color: var(--app-text-primary); }
+        .mobile-nav a:hover, .mobile-nav a.nav-active-mobile { background-color: rgba(var(--app-primary-rgb), 0.1); color: var(--app-primary); }
+        .mobile-nav .btn { text-align: center; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease; }
+        .overlay.open { opacity: 1; visibility: visible; }
+        
+        /* Animations & Scroll Top */
+        .animated { opacity: 0; transform: translateY(25px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .animated.fadeIn { opacity: 1; transform: translateY(0); }
+        .scroll-top { position: fixed; bottom: 25px; right: 25px; width: 52px; height: 52px; background-color: var(--app-primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transition: var(--transition-std); z-index: 999; border: none; font-size: 1.2rem; }
+        .scroll-top.active { opacity: 1; visibility: visible; }
+        .scroll-top:hover { background-color: var(--app-secondary); transform: scale(1.1); }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .nav-desktop, .header-actions .btn { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+            #hero { padding-top: 120px; padding-bottom: 60px; }
+            #hero .hero-content { text-align: center; }
+            .about-content { flex-direction: column; gap: 32px; text-align: center; }
+            .testimonial-slider-container { padding: 0; }
+            .left-arrow { left: 10px; } .right-arrow { right: 10px; }
+        }
+        @media (max-width: 768px) {
+            .card-grid { grid-template-columns: 1fr; }
+            .pricing-card.featured { transform: scale(1); }
+            .footer-content { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#hero" class="logo"><i class="fa-solid fa-hospital"></i>Newtons HMS</a>
+                <nav class="nav-desktop">
+                    <ul>
+                        <li><a href="#benefits">Benefits</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="header-actions">
+                    <a href="https://hms.newtons.in" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">Log In</a>
+                    <a href="https://drshiva.in" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Request a Demo</a>
+                    <button class="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <button class="mobile-menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNavMenu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-nav" id="mobileNavMenu" aria-hidden="true">
+        <button class="mobile-nav-close" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+        <ul>
+            <li><a href="#benefits" class="mobile-nav-link">Benefits</a></li>
+            <li><a href="#features" class="mobile-nav-link">Features</a></li>
+            <li><a href="#pricing" class="mobile-nav-link">Pricing</a></li>
+            <li><a href="#about" class="mobile-nav-link">About</a></li>
+            <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+            <hr style="margin: 1rem 0; border-color: var(--app-border);">
+            <li><a href="https://hms.newtons.in" target="_blank" rel="noopener noreferrer" class="mobile-nav-link">Log In to HMS</a></li>
+            <li><a href="https://drshiva.in" target="_blank" rel="noopener noreferrer" class="mobile-nav-link btn btn-primary mt-2">Request a Demo</a></li>
+        </ul>
+    </div>
+    <div class="overlay"></div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="gradient-bg">
+        <div class="container">
+            <div class="hero-grid animated">
+                <div class="hero-content">
+                    <h1>The First Truly Autonomous, Cloud-Based AI Hospital Management System</h1>
+                    <p class="hero-subtitle">Our AI takes complete control—automatically collecting complaints, ordering tests, drafting diagnoses, and managing medications to revolutionize hospital efficiency and patient care.</p>
+                    <a class="btn btn-light btn-lg me-2 mb-2" href="https://drshiva.in" target="_blank" rel="noopener noreferrer">Request a Demo</a>
+                    <a class="btn btn-outline-light btn-lg mb-2" href="https://hms.newtons.in" target="_blank" rel="noopener noreferrer">Login</a>
+                </div>
+                <div class="video-container">
+                    <iframe id="youtube-hero-video" src="https://www.youtube.com/embed/C4XGqhEq43A?si=CloBztcsfk136-AE&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+  
+    <!-- Benefits Section -->
+    <section id="benefits" class="bg-surface">
+        <div class="container">
+            <h2 class="section-heading animated">A Fully Autonomous Platform</h2>
+            <p class="section-subheading animated">Newtons gives the AI complete control over clinical and administrative workflows to maximize efficiency and patient outcomes.</p>
+            <div class="card-grid">
+                <div class="feature-card animated">
+                    <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+                    <h5 class="card-title">Autonomous Clinical Decisions</h5>
+                    <p class="card-text">Our AI takes full control—automatically ordering tests, drafting diagnoses and treatment plans, and ordering medications for final review.</p>
+                </div>
+                <div class="feature-card animated">
+                    <div class="card-icon"><i class="fa-solid fa-file-medical"></i></div>
+                    <h5 class="card-title">Unified Data Environment</h5>
+                    <p class="card-text">The AI consolidates patient records, appointments, and billing on a single platform, eliminating data silos for superior decision-making.</p>
+                </div>
+                <div class="feature-card animated">
+                    <div class="card-icon"><i class="fa-solid fa-gears"></i></div>
+                    <h5 class="card-title">End-to-End Automation</h5>
+                    <p class="card-text">Automates all routine tasks from patient intake to billing and inventory, freeing your highly skilled staff to focus only on patient care.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="bg-surface">
+        <div class="container">
+            <h2 class="section-heading animated">Management for Every Department</h2>
+            <p class="section-subheading animated">Our cloud-based AI system includes specialized modules to streamline operations across your entire facility.</p>
+            <div class="card-grid">
+                <div class="feature-card animated"><div class="card-icon"><i class="fa-solid fa-concierge-bell"></i></div><h5 class="card-title">Reception Management</h5><p class="card-text">Enhances the front desk experience by ensuring patient check-ins and appointments run smoothly, simplifying all administrative tasks.</p></div>
+                <div class="feature-card animated"><div class="card-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div><h5 class="card-title">Billing and Invoicing</h5><p class="card-text">Revolutionizes financial management by simplifying payment tracking, invoice creation, and financial activities with full transparency.</p></div>
+                <div class="feature-card animated"><div class="card-icon"><i class="fa-solid fa-bed-pulse"></i></div><h5 class="card-title">Ward / IPD Management</h5><p class="card-text">Optimizes ward management, handling patient arrivals and discharges, streamlining bed allocation, and improving staff coordination.</p></div>
+                <div class="feature-card animated"><div class="card-icon"><i class="fa-solid fa-user-tie"></i></div><h5 class="card-title">Human Resources</h5><p class="card-text">Handles all aspects of HR, from onboarding new personnel to monitoring performance and organizing HR processes efficiently.</p></div>
+                <div class="feature-card animated"><div class="card-icon"><i class="fa-solid fa-boxes-stacked"></i></div><h5 class="card-title">Inventory and Assets</h5><p class="card-text">Manage all hospital resources with ease, from tracking assets to managing inventories and ensuring the efficient use of available equipment.</p></div>
+                <div class="feature-card animated"><div class="card-icon"><i class="fa-solid fa-ambulance"></i></div><h5 class="card-title">Ambulance Management</h5><p class="card-text">Track ambulance availability and location, manage drivers, and allow clients to book services based on their immediate needs.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing">
+      <div class="container">
+          <h2 class="section-heading animated">Transparent Pricing</h2>
+          <p class="section-subheading animated">A complete, all-in-one solution for the modern, AI-driven hospital. No hidden fees, no complex tiers.</p>
+          <div class="card-grid" style="justify-content: center;">
+              <div class="feature-card pricing-card featured animated">
+                  <h3 class="card-title">AI Hospital Pro</h3>
+                  <p class="card-text">The complete autonomous hospital management solution.</p>
+                   <div class="price">
+                      <span class="current-price">₹30,000</span>
+                      <span class="price-term">/ year</span>
+                  </div>
+                  <ul class="features-list">
+                      <li><strong>All-in-One AI HMS</strong></li>
+                      <li>Automated Complaint Intake</li>
+                      <li>AI-Driven Investigation Orders</li>
+                      <li>Automatic Report Analysis</li>
+                      <li>Smart Pharmacy Integration</li>
+                      <li>All General HMS Features</li>
+                      <li>24/7 Priority Support</li>
+                  </ul>
+                  <a href="https://hms.newtons.in" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg mt-auto">
+                      <i class="fa-solid fa-hospital"></i> Deploy AI HMS
+                  </a>
+              </div>
+          </div>
+      </div>
+  </section>
+
+    <!-- About Section -->
+    <section id="about" class="bg-surface">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image animated" style="flex: 1;">
+                    <img src="https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=600&q=80" alt="Doctors collaborating with technology">
+                </div>
+                <div class="about-text animated" style="flex: 1.2;">
+                    <h2 class="section-heading" style="text-align: left;">About Newtons HMS</h2>
+                    <p>Newtons is the world's first fully autonomous, cloud-based AI hospital management system. It supports all clinical and administrative workflows by giving the AI complete control over the data flow, improving decision-making and patient outcomes.</p>
+                    <p>Built for the future of healthcare IT, Newtons aligns with national health standards and addresses global challenges. Its AI-powered engine frees your staff to focus only on critical, high-level patient care.</p>
+                    <a href="https://drshiva.in" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials">
+        <div class="container">
+            <h2 class="section-heading animated">Trusted by Visionary Healthcare Leaders</h2>
+            <p class="section-subheading animated">Hear from administrators who have revolutionized their operations with Newtons HMS.</p>
+            <div class="testimonial-slider-container animated">
+                <button class="slider-arrow left-arrow" aria-label="Previous testimonial"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">“Newtons isn't just an improvement; it's a revolution. Our clerical errors are down 90%, and our doctors are catching conditions weeks earlier. The AI is in complete control, and our outcomes prove it was the right decision.”</p>
+                        <div class="testimonial-person">
+                            <img src="https://i.pravatar.cc/48?img=1" alt="Avatar">
+                            <div class="testimonial-info">
+                                <h4>Hospital Administrator</h4>
+                                <p>Metro General Hospital</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">“The concept of a fully autonomous, cloud-based AI system seemed like science fiction. Now, it's our daily reality. It has transformed our multi-center network into a single, efficient entity.”</p>
+                        <div class="testimonial-person">
+                            <img src="https://i.pravatar.cc/48?img=2" alt="Avatar">
+                            <div class="testimonial-info">
+                                <h4>Chief IT Officer</h4>
+                                <p>City Hospitals Group</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="testimonial-card">
+                        <p class="testimonial-text">“Patient wait times have been cut in half. The AI's ability to automate intake, triage, and scheduling is something we could only dream of before. Our staff can now focus entirely on patient care.”</p>
+                        <div class="testimonial-person">
+                            <img src="https://i.pravatar.cc/48?img=3" alt="Avatar">
+                            <div class="testimonial-info">
+                                <h4>Head of Operations</h4>
+                                <p>Apex Healthcare</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="slider-arrow right-arrow" aria-label="Next testimonial"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-surface">
+        <div class="container animated">
+            <h2 class="section-heading">Contact Newtons Ai Hospitals</h2>
+            <p class="section-subheading">Get in touch with us for appointments or inquiries.</p>
+            <div class="contact-info">
+                <div class="contact-item animated">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Address</h3>
+                    <p>Opposite to Post Office, Nandigama 521185</p>
+                </div>
+                <div class="contact-item animated">
+                    <i class="fas fa-phone"></i>
+                    <h3>Phone</h3>
+                    <p>+91 63631 11328</p>
+                </div>
+                <div class="contact-item animated">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    <p>drnewtonsai@gmail.com</p>
+                </div>
+            </div>
+            <div class="contact-actions animated">
+                <a href="https://maps.google.com/?q=Nandigama+521185" class="btn btn-primary" target="_blank">View on Maps</a>
+                <a href="tel:+916363111328" class="btn btn-outline-primary">Call Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col" style="flex: 2; min-width: 280px;">
+                    <h3><i class="fa-solid fa-hospital"></i> Newtons HMS</h3>
+                    <p>The world's first fully autonomous, cloud-based AI hospital management system. Built in India, for the world.</p>
+                </div>
+                <div class="footer-col">
+                    <h6>Quick Links</h6>
+                    <ul class="footer-links">
+                        <li><a href="#benefits">Benefits</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#about">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h6>Company</h6>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h6>Legal</h6>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span id="currentYear"></span> Newtons Healthcare Solutions. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-top" aria-label="Scroll to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+            const themeToggleButton = document.querySelector('.theme-toggle');
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileNav = document.querySelector('.mobile-nav');
+            const mobileNavClose = document.querySelector('.mobile-nav-close');
+            const overlay = document.querySelector('.overlay');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+            const header = document.querySelector('header');
+            
+            // --- Theme Toggler ---
+            const applyTheme = (theme) => {
+                const icon = themeToggleButton.querySelector('i');
+                body.classList.toggle('dark-theme', theme === 'dark');
+                icon.classList.toggle('fa-moon', theme === 'light');
+                icon.classList.toggle('fa-sun', theme === 'dark');
+                localStorage.setItem('theme', theme);
+                themeToggleButton.setAttribute('aria-pressed', theme === 'dark');
+            };
+            themeToggleButton.addEventListener('click', () => {
+                applyTheme(body.classList.contains('dark-theme') ? 'light' : 'dark');
+            });
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(savedTheme);
+
+            // --- Mobile Menu ---
+            const toggleMobileMenu = (open) => {
+                const shouldOpen = typeof open === 'undefined' ? !mobileNav.classList.contains('open') : open;
+                mobileNav.classList.toggle('open', shouldOpen);
+                overlay.classList.toggle('open', shouldOpen);
+                mobileMenuBtn.setAttribute('aria-expanded', shouldOpen);
+                body.style.overflow = shouldOpen ? 'hidden' : '';
+            };
+            mobileMenuBtn.addEventListener('click', () => toggleMobileMenu(true));
+            mobileNavClose.addEventListener('click', () => toggleMobileMenu(false));
+            overlay.addEventListener('click', () => toggleMobileMenu(false));
+            mobileNavLinks.forEach(link => {
+                if (link.getAttribute('href').startsWith('#')) {
+                    link.addEventListener('click', () => toggleMobileMenu(false));
+                }
+            });
+
+            // --- Smooth Scroll & Nav Highlighting ---
+            const updateScrollPadding = () => {
+                document.documentElement.style.scrollPaddingTop = `${header?.offsetHeight || 72}px`;
+            };
+            updateScrollPadding();
+            window.addEventListener('resize', updateScrollPadding);
+
+            const navLinks = document.querySelectorAll('.nav-desktop a, .mobile-nav a:not(.btn)');
+            const highlightNavLinks = () => {
+                let currentSectionId = 'hero';
+                const scrollPosition = window.scrollY;
+                document.querySelectorAll('section[id]').forEach(section => {
+                    const sectionTop = section.offsetTop - header.offsetHeight - 50;
+                    if (scrollPosition >= sectionTop) {
+                        currentSectionId = section.id;
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('nav-active', 'nav-active-mobile');
+                    if (link.getAttribute('href') === `#${currentSectionId}`) {
+                        link.classList.add('nav-active', 'nav-active-mobile');
+                    }
+                });
+            };
+            window.addEventListener('scroll', highlightNavLinks);
+            highlightNavLinks();
+
+            // --- Scroll to Top Button ---
+            const scrollTopButton = document.querySelector('.scroll-top');
+            if (scrollTopButton) {
+                window.addEventListener('scroll', () => {
+                    scrollTopButton.classList.toggle('active', window.scrollY > 400);
+                });
+                scrollTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            }
+
+            // --- Testimonial Slider ---
+            const testimonialGrid = document.querySelector('.testimonial-grid');
+            const leftArrow = document.querySelector('.left-arrow');
+            const rightArrow = document.querySelector('.right-arrow');
+            if (testimonialGrid && leftArrow && rightArrow) {
+                const scrollTestimonial = (direction) => {
+                    const cardWidth = testimonialGrid.querySelector('.testimonial-card').offsetWidth;
+                    const gap = parseFloat(window.getComputedStyle(testimonialGrid).gap) || 24;
+                    testimonialGrid.scrollBy({ left: direction * (cardWidth + gap), behavior: 'smooth' });
+                };
+                leftArrow.addEventListener('click', () => scrollTestimonial(-1));
+                rightArrow.addEventListener('click', () => scrollTestimonial(1));
+            }
+
+            // --- Fade-in Animations on Scroll ---
+            const animatedElements = document.querySelectorAll('.animated');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fadeIn');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+            animatedElements.forEach(el => observer.observe(el));
+            
+            // --- Footer Year ---
+            const yearSpan = document.getElementById('currentYear');
+            if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+            // --- YouTube Video Autoplay on Scroll ---
+            const videoIframe = document.getElementById('youtube-hero-video');
+            if (videoIframe) {
+                // 1. Dynamically load the YouTube Iframe API
+                const tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/iframe_api";
+                const firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+                let player;
+
+                // 2. This function will be called by the API when it's ready
+                window.onYouTubeIframeAPIReady = function() {
+                    player = new YT.Player('youtube-hero-video', {
+                        events: {
+                            'onReady': onPlayerReady
+                        }
+                    });
+                };
+
+                // 3. The API will call this function when the video player is ready.
+                function onPlayerReady(event) {
+                    // Mute the video to allow autoplay in most browsers
+                    event.target.mute();
+
+                    // 4. Set up Intersection Observer to track video visibility
+                    const videoObserver = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                player.playVideo();
+                            } else {
+                                player.pauseVideo();
+                            }
+                        });
+                    }, { 
+                        threshold: 0.5 // Trigger when 50% of the element is in view
+                    });
+                    
+                    // 5. Start observing the iframe
+                    videoObserver.observe(videoIframe);
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
