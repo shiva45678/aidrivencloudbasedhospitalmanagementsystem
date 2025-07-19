@@ -168,8 +168,43 @@
         .feature-card .card-text { color: var(--app-text-secondary); font-size: 0.95rem; line-height: 1.6; flex-grow: 1; }
 
         /* Video Container (used in Hero) */
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: var(--border-radius-lg); box-shadow: var(--card-hover-shadow); }
+        .video-container { 
+            position: relative; 
+            padding-bottom: 56.25%; 
+            height: 0; 
+            overflow: hidden; 
+            max-width: 100%; 
+            background: #000; 
+            border-radius: var(--border-radius-lg); 
+            box-shadow: var(--card-hover-shadow);
+        }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* NEW: Unmute Button Styles */
+        .unmute-button {
+            position: absolute;
+            bottom: 15px; /* Adjust positioning as needed */
+            right: 15px; /* Adjust positioning as needed */
+            background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 45px; /* Slightly larger button */
+            height: 45px;
+            display: flex; /* Will be set to flex by JS when ready */
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.3rem; /* Larger icon */
+            z-index: 10; /* Ensure it's above the video */
+            transition: background-color 0.2s, transform 0.2s;
+            display: none; /* Hide by default, JavaScript will show it */
+        }
+
+        .unmute-button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
 
         /* About Section */
         .about-content { display: flex; align-items: center; gap: 48px; }
@@ -241,14 +276,56 @@
         .scroll-top { position: fixed; bottom: 25px; right: 25px; width: 52px; height: 52px; background-color: var(--app-primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transition: var(--transition-std); z-index: 999; border: none; font-size: 1.2rem; }
         .scroll-top.active { opacity: 1; visibility: visible; }
         .scroll-top:hover { background-color: var(--app-secondary); transform: scale(1.1); }
+
+        /* Helper classes for responsive visibility */
+        .desktop-only { display: block; }
+        .mobile-only { display: none; }
         
         /* Responsive */
         @media (max-width: 992px) {
             .nav-desktop, .header-actions .btn { display: none; }
             .mobile-menu-btn { display: block; }
-            .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+
+            /* New: Hide desktop buttons and show mobile buttons */
+            .desktop-only { display: none; }
+            .mobile-only { display: block; }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            /* New: Reorder hero content for mobile */
+            .hero-grid .video-container {
+                order: -2; /* Puts the video first on mobile */
+            }
+            .hero-grid .mobile-only { /* The new buttons container */
+                order: -1; /* Puts the buttons after the video but before text */
+                text-align: center;
+                margin-top: 20px; /* Space between video and buttons */
+                display: flex; /* Make buttons align nicely */
+                justify-content: center; /* Center buttons horizontally */
+                flex-wrap: wrap; /* Allow buttons to wrap if space is tight */
+                gap: 1rem; /* Consistent spacing between buttons */
+            }
+            /* New: Remove default button margins when inside the mobile-only container */
+            .hero-grid .mobile-only .btn {
+                margin-right: 0 !important;
+                margin-left: 0 !important;
+                margin-bottom: 0 !important;
+            }
             #hero { padding-top: 120px; padding-bottom: 60px; }
-            #hero .hero-content { text-align: center; }
+            #hero .hero-content {
+                order: 0; /* Keeps the text content after the video and new buttons */
+                text-align: center;
+            }
+            /* New: Reduce text size in hero section for mobile */
+            #hero .hero-content h1 {
+                font-size: clamp(1.8rem, 6vw, 2.8rem); /* Adjusted minimum font size for H1 */
+            }
+            #hero .hero-content p {
+                font-size: clamp(0.9rem, 2.5vw, 1.05rem); /* Adjusted minimum font size for P */
+            }
+
             .about-content { flex-direction: column; gap: 32px; text-align: center; }
             .testimonial-slider-container { padding: 0; }
             .left-arrow { left: 10px; } .right-arrow { right: 10px; }
@@ -313,11 +390,23 @@
                 <div class="hero-content">
                     <h1>The First Truly Autonomous, Cloud-Based AI Hospital Management System</h1>
                     <p class="hero-subtitle">Our AI takes complete control—automatically collecting complaints, ordering tests, drafting diagnoses, and managing medications to revolutionize hospital efficiency and patient care.</p>
-                    <a class="btn btn-light btn-lg me-2 mb-2" href="https://drshiva.in" target="_blank" rel="noopener noreferrer">Request a Demo</a>
-                    <a class="btn btn-outline-light btn-lg mb-2" href="https://hms.newtons.in" target="_blank" rel="noopener noreferrer">Login</a>
+                    <!-- Buttons for Desktop View -->
+                    <div class="hero-buttons desktop-only">
+                        <a class="btn btn-light btn-lg me-2 mb-2" href="https://drshiva.in" target="_blank" rel="noopener noreferrer">Request a Demo</a>
+                        <a class="btn btn-outline-light btn-lg mb-2" href="https://hms.newtons.in" target="_blank" rel="noopener noreferrer">Login</a>
+                    </div>
                 </div>
                 <div class="video-container">
                     <iframe id="youtube-hero-video" src="https://www.youtube.com/embed/C4XGqhEq43A?si=CloBztcsfk136-AE&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <!-- NEW: Unmute Button -->
+                    <button id="unmuteButton" class="unmute-button" aria-label="Unmute video">
+                        <i class="fa-solid fa-volume-xmark"></i> 
+                    </button>
+                </div>
+                <!-- Buttons for Mobile View - placed after video for reordering -->
+                <div class="hero-buttons mobile-only">
+                    <a class="btn btn-light btn-lg" href="https://drshiva.in" target="_blank" rel="noopener noreferrer">Request a Demo</a>
+                    <a class="btn btn-outline-light btn-lg" href="https://hms.newtons.in" target="_blank" rel="noopener noreferrer">Login</a>
                 </div>
             </div>
         </div>
@@ -636,16 +725,34 @@
             const yearSpan = document.getElementById('currentYear');
             if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-            // --- YouTube Video Autoplay on Scroll ---
+            // --- YouTube Video Autoplay on Scroll with Unmute Button ---
             const videoIframe = document.getElementById('youtube-hero-video');
+            const unmuteButton = document.getElementById('unmuteButton'); // Get the new button
+            let player; // Declare player variable in this scope
+            let isMuted = true; // Track mute state
+
+            // Function to update the unmute button icon and aria-label
+            function updateUnmuteButtonIcon() {
+                if (unmuteButton) {
+                    const icon = unmuteButton.querySelector('i');
+                    if (isMuted) {
+                        icon.classList.remove('fa-volume-high');
+                        icon.classList.add('fa-volume-xmark');
+                        unmuteButton.setAttribute('aria-label', 'Unmute video');
+                    } else {
+                        icon.classList.remove('fa-volume-xmark');
+                        icon.classList.add('fa-volume-high');
+                        unmuteButton.setAttribute('aria-label', 'Mute video');
+                    }
+                }
+            }
+
             if (videoIframe) {
                 // 1. Dynamically load the YouTube Iframe API
                 const tag = document.createElement('script');
                 tag.src = "https://www.youtube.com/iframe_api";
                 const firstScriptTag = document.getElementsByTagName('script')[0];
                 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-                let player;
 
                 // 2. This function will be called by the API when it's ready
                 window.onYouTubeIframeAPIReady = function() {
@@ -658,24 +765,52 @@
 
                 // 3. The API will call this function when the video player is ready.
                 function onPlayerReady(event) {
-                    // Mute the video to allow autoplay in most browsers
-                    event.target.mute();
+                    event.target.mute(); // Mute the video to allow autoplay
+                    isMuted = true;
+                    if (unmuteButton) {
+                        unmuteButton.style.display = 'flex'; // Show the unmute button
+                        updateUnmuteButtonIcon(); // Set initial icon (muted)
+                    }
 
                     // 4. Set up Intersection Observer to track video visibility
                     const videoObserver = new IntersectionObserver((entries) => {
                         entries.forEach(entry => {
-                            if (entry.isIntersecting) {
-                                player.playVideo();
-                            } else {
-                                player.pauseVideo();
+                            if (player) { // Ensure player is initialized
+                                if (entry.isIntersecting) {
+                                    // Only play if video is visible AND not already playing
+                                    if (player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                                        player.playVideo();
+                                    }
+                                } else {
+                                    // Only pause if video is not visible AND is currently playing/buffering
+                                    if (player.getPlayerState() === YT.PlayerState.PLAYING || player.getPlayerState() === YT.PlayerState.BUFFERING) {
+                                        player.pauseVideo();
+                                    }
+                                }
                             }
                         });
                     }, { 
                         threshold: 0.5 // Trigger when 50% of the element is in view
                     });
                     
-                    // 5. Start observing the iframe
+                    // 5. Start observing the iframe once player is ready
                     videoObserver.observe(videoIframe);
+                }
+
+                // Add click listener to the unmute button
+                if (unmuteButton) {
+                    unmuteButton.addEventListener('click', () => {
+                        if (player) { // Ensure player object is available
+                            if (isMuted) {
+                                player.unMute();
+                                isMuted = false;
+                            } else {
+                                player.mute();
+                                isMuted = true;
+                            }
+                            updateUnmuteButtonIcon(); // Update button icon
+                        }
+                    });
                 }
             }
         });
